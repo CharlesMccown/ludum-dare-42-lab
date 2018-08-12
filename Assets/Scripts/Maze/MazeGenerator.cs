@@ -10,7 +10,7 @@ public class MazeGenerator : MonoBehaviour
     [SerializeField]
     private GameObject escapePrefab;
     [SerializeField]
-    private float complexity = 0.1f;
+    private DifficultySettings settings;
     private MazeData mazeData;
 
     public int[,] data
@@ -26,7 +26,7 @@ public class MazeGenerator : MonoBehaviour
             {1, 0, 1},
             {1, 1, 1}
         };
-        mazeData = new MazeData(complexity);
+        mazeData = new MazeData(settings.CurrentDifficulty.Complexity, settings.CurrentDifficulty.SafePathDistance);
     }
 
     public void GenerateNewMaze(int sizeRows, int sizeCols)

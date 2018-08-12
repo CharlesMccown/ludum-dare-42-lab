@@ -6,11 +6,7 @@ internal class MazeCollapser :MonoBehaviour
     [SerializeField]
     private GameObject collapsedWallPrefab;
     [SerializeField]
-    private float instability = 0.1f;
-    [SerializeField]
-    private int limitDistance = 1;
-    [SerializeField]
-    private int maxDistance = 10;
+    private DifficultySettings settings;
     private IMove move;
 
     internal void Awake()
@@ -21,11 +17,11 @@ internal class MazeCollapser :MonoBehaviour
 
     private void HandleMove(Vector3 position, float speed)
     {
-        if (Random.value > instability)
+        if (Random.value > settings.CurrentDifficulty.Instability)
         {
-            int horizontalDistance = (int)(Random.Range(-maxDistance, maxDistance));
+            int horizontalDistance = (int)(Random.Range(-settings.CurrentDifficulty.MaxDistance, settings.CurrentDifficulty.MaxDistance));
             horizontalDistance = limitToMinimumDistance(horizontalDistance);
-            int verticalDistance = (int)(Random.Range(-maxDistance, maxDistance));
+            int verticalDistance = (int)(Random.Range(-settings.CurrentDifficulty.MaxDistance, settings.CurrentDifficulty.MaxDistance));
             verticalDistance = limitToMinimumDistance(verticalDistance);
 
             Instantiate(collapsedWallPrefab, position + (new Vector3(horizontalDistance, verticalDistance, 0) * speed), transform.rotation);
@@ -35,8 +31,8 @@ internal class MazeCollapser :MonoBehaviour
     private int limitToMinimumDistance(int distance)
     {
         if (distance > 0)
-            return (int)Mathf.Max(limitDistance, distance);
+            return (int)Mathf.Max(settings.CurrentDifficulty.LimitDistance, distance);
         else
-            return (int)Mathf.Min(-limitDistance, distance);
+            return (int)Mathf.Min(-settings.CurrentDifficulty.LimitDistance, distance);
     }
 }
